@@ -104,7 +104,7 @@ dist
 .tern-port
 
 # Discard temporary files
-# .tmp/
+ .tmp/
 
 # Discard ExifTool cache config file
-# bin/.ExifTool_config
+ bin/.ExifTool_config
