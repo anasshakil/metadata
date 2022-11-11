@@ -5,7 +5,7 @@ import { getMetadata } from "../lib/meta.js"
 
 async function read() {
     try {
-        const _file = path.join(__getDir(), "test/sample.pdf");
+        const _file = path.join(__getDir(), ".tmp/e40e2f6a513ce6c3872c196c0fd750e5ecacfada97a5477744be2ec5053a1fa4");
         const metadata = await getMetadata(_file);
         console.log(metadata);
     } catch (e) {
@@ -42,6 +42,6 @@ async function streamURL() {
     }
 }
 
-// read();
+read();
 // streamFile();
 // streamURL();
