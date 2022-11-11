@@ -44,4 +44,49 @@ async function config1() {
     });
 }
 
-config1();
+async function config2() {
+    await Metadata.configurator({
+        default: false,
+        args: [
+            {
+                name: "Sig",
+                type: "string",
+                exifPropGroup: "Exif",
+                exifPropSubGroup: "Main"
+            },
+            {
+                name: "Key1",
+                type: "string",
+                exifPropGroup: "Exif",
+                exifPropSubGroup: "Main"
+            },
+            {
+                name: "Key2",
+                type: "string",
+                exifPropGroup: "Exif",
+                exifPropSubGroup: "Main"
+            },
+            {
+                name: "Sig",
+                type: "string",
+                exifPropGroup: "PDF",
+                exifPropSubGroup: "Info"
+            },
+            {
+                name: "KeyPDF1",
+                type: "string",
+                exifPropGroup: "PDF",
+                exifPropSubGroup: "Info"
+            },
+            {
+                name: "KeyPDF2",
+                type: "string",
+                exifPropGroup: "DOCX",
+                exifPropSubGroup: "Microsoft"
+            }
+        ],
+    })
+}
+
+// config1();
+// config2();
