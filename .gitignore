@@ -102,3 +102,9 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Discard temporary files
+# .tmp/
+
+# Discard ExifTool cache config file
+# bin/.ExifTool_config
