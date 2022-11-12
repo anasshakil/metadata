@@ -2,7 +2,7 @@ import Metadata from "../lib/index.js";
 
 async function config1() {
     await Metadata.configurator({
-        args: [
+        tags: [
             {
                 name: "Sig",
                 type: "string",
@@ -47,7 +47,7 @@ async function config1() {
 async function config2() {
     await Metadata.configurator({
         default: false,
-        args: [
+        tags: [
             {
                 name: "Sig",
                 type: "string",
