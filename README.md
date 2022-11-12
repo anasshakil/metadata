@@ -5,7 +5,7 @@ An advanced Node.js interface to the exiftool. 🚀
 > “An amazing level of senseless perfectionism,
 > which is simply impossible not to respect.”
 
-[Exiftool](https://exiftool.org/) is an amazing tool written by Phil Harvey in Perl which can read and write metadata to a number of file formats. This library supports streams. So, you don't have to handle anything from your end. It also cache network files to save your bandwidth. 
+[Exiftool](https://exiftool.org/) is an amazing tool written by Phil Harvey in Perl which can read and write metadata to a number of file formats. This library supports streams. So, you don't have to handle anything from your end. It also cache network files to save your bandwidth.
 
 ## Table of Contents
 
@@ -32,19 +32,19 @@ import Metadata from "@enviro/metadata";
 async function config() {
     await Metadata.configurator({
         default: true,
-        args: [
+        tags: [
             {
                 name: "CUSTOM_TAG",
                 type: "string",
                 exifPropGroup: "Exif",
-                exifPropSubGroup: "Main"
+                exifPropSubGroup: "Main",
             },
             {
                 name: "CUSTOM_TAG",
                 type: "string",
                 exifPropGroup: "PDF",
-                exifPropSubGroup: "Info"
-            }
+                exifPropSubGroup: "Info",
+            },
         ],
     });
 }
@@ -54,7 +54,7 @@ async function config() {
 
 ### Extract Metadata
 
-- #### File Path
+-   #### File Path
 
 ```js
 async function read() {
@@ -64,9 +64,9 @@ async function read() {
             tags: [
                 {
                     name: "FileName",
-                    exclude: true
-                }
-            ]
+                    exclude: true,
+                },
+            ],
         });
         console.log(metadata);
     } catch (e) {
@@ -74,34 +74,38 @@ async function read() {
     }
 }
 ```
-- #### Output
+
+-   #### Output
+
 ```js
 // FileName excluded from the result
 [
-  {
-    FileSize: '89 kB',
-    FileModifyDate: '2022:11:11 17:08:58+05:00',
-    FileAccessDate: '2022:11:11 17:08:58+05:00',
-    FileInodeChangeDate: '2022:11:11 17:08:58+05:00',
-    FilePermissions: '-rwxrwxrwx',
-    FileType: 'PDF',
-    FileTypeExtension: 'pdf',
-    MIMEType: 'application/pdf',
-    PDFVersion: 1.3,
-    Linearized: 'No',
-    Encryption: 'Standard V1.2 (40-bit)',
-    UserAccess: 'Print, Copy, Annotate, Fill forms, Extract, Assemble, Print high-res',
-    CreateDate: '2001:10:26 13:39:34',
-    Producer: 'Acrobat Distiller 4.05 for Windows',
-    ModifyDate: '2001:10:26 13:40:41-04:00',
-    Title: 'PDF Bookmark Sample',
-    Author: 'Accelio Corporation',
-    PageCount: 4
-  }
-]
+    {
+        FileSize: "89 kB",
+        FileModifyDate: "2022:11:11 17:08:58+05:00",
+        FileAccessDate: "2022:11:11 17:08:58+05:00",
+        FileInodeChangeDate: "2022:11:11 17:08:58+05:00",
+        FilePermissions: "-rwxrwxrwx",
+        FileType: "PDF",
+        FileTypeExtension: "pdf",
+        MIMEType: "application/pdf",
+        PDFVersion: 1.3,
+        Linearized: "No",
+        Encryption: "Standard V1.2 (40-bit)",
+        UserAccess:
+            "Print, Copy, Annotate, Fill forms, Extract, Assemble, Print high-res",
+        CreateDate: "2001:10:26 13:39:34",
+        Producer: "Acrobat Distiller 4.05 for Windows",
+        ModifyDate: "2001:10:26 13:40:41-04:00",
+        Title: "PDF Bookmark Sample",
+        Author: "Accelio Corporation",
+        PageCount: 4,
+    },
+];
 ```
 
-- #### File Stream
+-   #### File Stream
+
 ```js
 import { createReadStream } from "node:fs";
 
@@ -111,17 +115,22 @@ async function streamFile() {
         const metadata = await Metadata.get(rs);
         console.log(metadata);
     } catch (e) {
-        console.error(e)
+        console.error(e);
     }
 }
 ```
-- #### URL Stream
+
+-   #### URL Stream
+
 ```js
 async function streamURL() {
     try {
-        const metadata = await Metadata.get("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", {
-            cache_stream: true
-        });
+        const metadata = await Metadata.get(
+            "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+            {
+                cache_stream: true,
+            }
+        );
         console.log(metadata);
     } catch (e) {
         console.error(e);
@@ -131,7 +140,7 @@ async function streamURL() {
 
 ### Edit Metadata
 
-- #### File Path
+-   #### File Path
 
 ```js
 async function write() {
@@ -140,9 +149,9 @@ async function write() {
             tags: [
                 {
                     name: "CUSTOM_TAG",
-                    value: "1234567890"
-                }
-            ]
+                    value: "1234567890",
+                },
+            ],
         });
         console.log(metadata);
     } catch (e) {
@@ -151,7 +160,7 @@ async function write() {
 }
 ```
 
-- #### File Stream
+-   #### File Stream
 
 ```js
 async function streamFile() {
@@ -161,29 +170,9 @@ async function streamFile() {
             tags: [
                 {
                     name: "CUSTOM_TAG",
-                    value: null // An empty tag will delete the tag from the file
-                }
-            ]
-        })
-        console.log(metadata)
-    } catch (e) {
-        console.error(e)
-    }
-}
-```
-
-- #### URL Stream
-```js
-async function streamURL() {
-    try {
-        // NOTE: This pdf has a size of 26 MB
-        const metadata = await Metadata.set("https://research.nhm.org/pdfs/10840/10840.pdf", {
-            tags: [
-                {
-                    name: "CUSTOM_TAG",
-                    value: "NEW_VALUE"
-                }
-            ]
+                    value: null, // An empty tag will delete the tag from the file
+                },
+            ],
         });
         console.log(metadata);
     } catch (e) {
@@ -192,7 +181,32 @@ async function streamURL() {
 }
 ```
 
-- #### OUTPUT
+-   #### URL Stream
+
+```js
+async function streamURL() {
+    try {
+        // NOTE: This pdf has a size of 26 MB
+        const metadata = await Metadata.set(
+            "https://research.nhm.org/pdfs/10840/10840.pdf",
+            {
+                tags: [
+                    {
+                        name: "CUSTOM_TAG",
+                        value: "NEW_VALUE",
+                    },
+                ],
+            }
+        );
+        console.log(metadata);
+    } catch (e) {
+        console.error(e);
+    }
+}
+```
+
+-   #### OUTPUT
+
 ```js
 {
   message: 'File updated successfully!',
@@ -214,10 +228,10 @@ sample implementation can be found inside [test directory].
 
 ### Jest
 
-- ##### Future milestone
+-   ##### Future milestone
 
 ## Tools
 
-- #####   Comming Soon
+-   ##### Comming Soon
 
 [test directory]: https://github.com/anasshakil/metadata/tree/main/test
