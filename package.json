@@ -1,6 +1,6 @@
 {
     "name": "@enviro/metadata",
-    "version": "1.1.12",
+    "version": "1.1.15",
     "description": "This a port version of ExifTool by Phil Harvey. All credit to the original author(s) for creating such an amazing and powerful tool.",
     "main": "./lib/index.js",
     "type": "module",
@@ -14,6 +14,10 @@
     "keywords": [],
     "author": "Ahmed Anas Shakil",
     "license": "ISC",
+    "files": [
+        "bin",
+        "lib"
+    ],
     "bugs": {
         "url": "https://github.com/anasshakil/metadata/issues"
     },

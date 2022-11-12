@@ -32,6 +32,7 @@ import Metadata from "@enviro/metadata";
 async function config() {
     await Metadata.configurator({
         default: true,
+        disable_cache_cleanup: true,
         tags: [
             {
                 name: "CUSTOM_TAG",
@@ -128,7 +129,7 @@ async function streamURL() {
         const metadata = await Metadata.get(
             "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
             {
-                cache_stream: true,
+                disable_cache: true,
             }
         );
         console.log(metadata);
