@@ -1,6 +1,6 @@
 {
     "name": "@enviro/metadata",
-    "version": "1.1.16",
+    "version": "1.1.17",
     "description": "This a port version of ExifTool by Phil Harvey. All credit to the original author(s) for creating such an amazing and powerful tool.",
     "main": "./lib/index.js",
     "type": "module",
