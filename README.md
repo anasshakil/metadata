@@ -19,13 +19,13 @@ An advanced Node.js interface to the exiftool. 🚀
 ## Install
 
 ```bash
-npm install --save node-metadata
+npm install --save @enviro/metadata
 ```
 
 ## Import & Configure
 
 ```js
-import Metadata from "node-metadata";
+import Metadata from "@enviro/metadata";
 
 // OPTIONAL
 // only required if you are using user-defined tags
