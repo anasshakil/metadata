@@ -217,6 +217,8 @@ async function streamURL() {
 }
 ```
 
+<a href="https://www.buymeacoffee.com/anasshakil" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="margin-top:20px;height: 60px !important;width: 217px !important;" ></a>
+
 ### NOTE
 
 -   The package is pure ESM. It cannot be require() from CommonJS.
