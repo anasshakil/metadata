@@ -1,7 +1,7 @@
 import Metadata from "../lib/index.js";
 import crypto from "node:crypto";
 import path from "node:path";
-import { __getDir } from "../__root.js";
+import { __getDir } from "../__dir.js";
 import { createReadStream } from "node:fs";
 
 async function write() {

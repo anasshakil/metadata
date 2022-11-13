@@ -1,6 +1,6 @@
 import { createReadStream } from "node:fs";
 import path from "node:path";
-import { __getDir } from "../__root.js";
+import { __getDir } from "../__dir.js";
 import Metadata from "../lib/index.js";
 
 async function read() {
