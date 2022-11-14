@@ -11,7 +11,11 @@ An advanced Node.js interface to the exiftool. 🚀
 
 -   [API](#api)
     -   [Extract Metadata](#extract-metadata)
-    -   [Edit Metadata](#edit-metadata)
+    -   [Add/Edit Metadata](#addedit-metadata)
+    -   [Cache](#cache)
+-   [Advanced](#advanced)
+    -   [Custom Configuration](#custom-configuration)
+-   [Buy me a Coffee](#buy-me-a-coffee)
 -   [Test](#test)
     -   [Jest](#jest)
 -   [Tools](#tools)
@@ -32,7 +36,7 @@ import Metadata from "@enviro/metadata";
 async function config() {
     await Metadata.configurator({
         default: true,
-        disable_cache_cleanup: true,
+        no_cache_cleanup: true,
         tags: [
             {
                 name: "CUSTOM_TAG",
@@ -51,172 +55,329 @@ async function config() {
 }
 ```
 
+-   #### Options
+
+    | Name               | Type              | Description                                                                                                                                   |
+    | ------------------ | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+    | `default`          | `boolean`         | **[Advanced]**. The default configuration use hex keys in file. If you want to use key name in file, set this to explicitly `default: false`. |
+    | `keyCodeEvaluator` | `number`          | **[Advanced]**. The value must be greater than **53248**. This is the default key for the first user-defined tag.                             |
+    | `no_cache_cleanup` | `boolean`         | This will stop auto cache cleaner on node server startup.                                                                                     |
+    | `tags`             | `[ExifCustomTag]` | Configure Exiftool to add or remove new metadata tags to the file.                                                                            |
+
+    -   #### _ExifCustomTag_
+
+        | Name               | Type                           | Description                                                                                                                                                                   |
+        | ------------------ | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | `name`             | `string`                       | The name of the custom tag.                                                                                                                                                   |
+        | `type`             | `"string"`                     | Type of the custom tag's value. You can pass custom valid type in here which is supported by exif tag group.                                                                  |
+        | `exifPropGroup`    | `"Exif"`, `"PDF"` or `string`  | The custom tag's belongs to this group. Custom group can be passed as an argument. Read more at [Family 0 (Information Type)]: https://exiftool.org/#groups                   |
+        | `exifPropSubGroup` | `"Main"`, `"Info"` or `string` | The custom tag's belongs to this specific sub group. Custom sub-group can be passed as an argument. Read more at [Family 1 (Specific Location)]: https://exiftool.org/#groups |
+
 ## API
 
-### Extract Metadata
+-   ### Extract Metadata
 
--   #### File Path
+    -   #### Local File
 
-```js
-async function read() {
-    try {
-        const metadata = await Metadata.get("test.pdf", {
-            // OPTIONAL - tags
-            tags: [
+    ```js
+    async function read() {
+        try {
+            const metadata = await Metadata.get("test.pdf", {
+                // OPTIONAL - tags
+                tags: [
+                    {
+                        name: "FileName",
+                        exclude: true,
+                    },
+                ],
+            });
+            console.log(metadata);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    ```
+
+    -   #### Output
+
+    ```js
+    [
+        {
+            FileSize: "89 kB",
+            FileModifyDate: "2022:11:11 17:08:58+05:00",
+            FileAccessDate: "2022:11:11 17:08:58+05:00",
+            FileInodeChangeDate: "2022:11:11 17:08:58+05:00",
+            FilePermissions: "-rwxrwxrwx",
+            FileType: "PDF",
+            FileTypeExtension: "pdf",
+            MIMEType: "application/pdf",
+            PDFVersion: 1.3,
+            Linearized: "No",
+            Encryption: "Standard V1.2 (40-bit)",
+            UserAccess:
+                "Print, Copy, Annotate, Fill forms, Extract, Assemble, Print high-res",
+            CreateDate: "2001:10:26 13:39:34",
+            Producer: "Acrobat Distiller 4.05 for Windows",
+            ModifyDate: "2001:10:26 13:40:41-04:00",
+            Title: "PDF Bookmark Sample",
+            Author: "Accelio Corporation",
+            PageCount: 4,
+        },
+    ];
+    ```
+
+    FileName excluded from the result.
+
+    -   #### File Stream
+
+    ```js
+    import { createReadStream } from "node:fs";
+
+    async function streamFile() {
+        try {
+            const rs = createReadStream("sample.pdf");
+            const metadata = await Metadata.get(rs);
+            console.log(metadata);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    ```
+
+    -   #### Network Stream
+
+    ```js
+    async function streamURL() {
+        try {
+            const metadata = await Metadata.get(
+                "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
                 {
-                    name: "FileName",
-                    exclude: true,
-                },
-            ],
-        });
-        console.log(metadata);
-    } catch (e) {
-        console.error(e);
+                    no_cache: true,
+                }
+            );
+            console.log(metadata);
+        } catch (e) {
+            console.error(e);
+        }
     }
-}
-```
+    ```
 
--   #### Output
+    -   #### Options
 
-```js
-// FileName excluded from the result
-[
-    {
-        FileSize: "89 kB",
-        FileModifyDate: "2022:11:11 17:08:58+05:00",
-        FileAccessDate: "2022:11:11 17:08:58+05:00",
-        FileInodeChangeDate: "2022:11:11 17:08:58+05:00",
-        FilePermissions: "-rwxrwxrwx",
-        FileType: "PDF",
-        FileTypeExtension: "pdf",
-        MIMEType: "application/pdf",
-        PDFVersion: 1.3,
-        Linearized: "No",
-        Encryption: "Standard V1.2 (40-bit)",
-        UserAccess:
-            "Print, Copy, Annotate, Fill forms, Extract, Assemble, Print high-res",
-        CreateDate: "2001:10:26 13:39:34",
-        Producer: "Acrobat Distiller 4.05 for Windows",
-        ModifyDate: "2001:10:26 13:40:41-04:00",
-        Title: "PDF Bookmark Sample",
-        Author: "Accelio Corporation",
-        PageCount: 4,
-    },
-];
-```
+    | Name       | Type              | Description                                                                                                                                                                                                                                                 |
+    | ---------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | `config`   | `string`          | **[Advanced]**. The path to the config file to use with exiftool.                                                                                                                                                                                           |
+    | `fileName` | `string`          | [Read: Cache file name](#custom-cache-file-name).                                                                                                                                                                                                           |
+    | `no_cache` | `boolean`         | This option doesn't work on local file path passed as a parameter. `no_cache: true` default for stream, read more about [Stream caching](#custom-cache-file-name). `no_cache: false` default for network file, read more [Network stream](#network-stream). |
+    | `tags`     | `[ExifReadOPTag]` | Filter the output metadata tags either excluded them or only include them.                                                                                                                                                                                  |
 
--   #### File Stream
+    -   #### _ExifReadOPTag_
 
-```js
-import { createReadStream } from "node:fs";
+        | Name      | Type      | Description                                                                                                                                                                 |
+        | --------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | `name`    | `string`  | Name of the metadata tag.                                                                                                                                                   |
+        | `exclude` | `boolean` | `exclude: true` exclude this tag from the result. `exclude: false` make this tag exclusive.                                                                                 |
+        | `custom`  | `string`  | Advanced Exiftool reading command can be directly passed to `custom`.<br/>Read more about exiftool commands at:<br/>https://exiftool.org/exiftool_pod.html#READING-EXAMPLES |
 
-async function streamFile() {
-    try {
-        const rs = createReadStream("sample.pdf");
-        const metadata = await Metadata.get(rs);
-        console.log(metadata);
-    } catch (e) {
-        console.error(e);
-    }
-}
-```
+-   ### Add/Edit Metadata
 
--   #### URL Stream
+    -   #### Local File
 
-```js
-async function streamURL() {
-    try {
-        const metadata = await Metadata.get(
-            "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-            {
-                disable_cache: true,
-            }
-        );
-        console.log(metadata);
-    } catch (e) {
-        console.error(e);
-    }
-}
-```
-
-### Edit Metadata
-
--   #### File Path
-
-```js
-async function write() {
-    try {
-        const metadata = await Metadata.set("sample.pdf", {
-            tags: [
-                {
-                    name: "CUSTOM_TAG",
-                    value: "1234567890",
-                },
-            ],
-        });
-        console.log(metadata);
-    } catch (e) {
-        console.error(e);
-    }
-}
-```
-
--   #### File Stream
-
-```js
-async function streamFile() {
-    try {
-        const rs = createReadStream("sample.pdf");
-        const metadata = await Metadata.set(rs, {
-            tags: [
-                {
-                    name: "CUSTOM_TAG",
-                    value: null, // An empty tag will delete the tag from the file
-                },
-            ],
-        });
-        console.log(metadata);
-    } catch (e) {
-        console.error(e);
-    }
-}
-```
-
--   #### URL Stream
-
-```js
-async function streamURL() {
-    try {
-        // NOTE: This pdf has a size of 26 MB
-        const metadata = await Metadata.set(
-            "https://research.nhm.org/pdfs/10840/10840.pdf",
-            {
+    ```js
+    async function write() {
+        try {
+            const metadata = await Metadata.set("sample.pdf", {
                 tags: [
                     {
                         name: "CUSTOM_TAG",
-                        value: "NEW_VALUE",
+                        value: "custom value",
                     },
                 ],
-            }
-        );
-        console.log(metadata);
-    } catch (e) {
-        console.error(e);
+            });
+            console.log(metadata);
+        } catch (e) {
+            console.error(e);
+        }
     }
-}
-```
+    ```
 
--   #### OUTPUT
+    -   #### File Stream
+
+    ```js
+    async function streamFile() {
+        try {
+            const rs = createReadStream("sample.pdf");
+            const metadata = await Metadata.set(rs, {
+                tags: [
+                    {
+                        name: "CUSTOM_TAG",
+                        value: null,
+                    },
+                ],
+            });
+            console.log(metadata);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    ```
+
+    An empty tag will delete the tag from the file.
+
+    -   #### Network Stream
+
+    ```js
+    async function streamURL() {
+        try {
+            // NOTE: This pdf has a size of 26 MB
+            const metadata = await Metadata.set(
+                "https://research.nhm.org/pdfs/10840/10840.pdf",
+                {
+                    new: true,
+                    prev: true,
+                    tags: [
+                        {
+                            name: "CUSTOM_TAG",
+                            value: "NEW VALUE",
+                        },
+                    ],
+                }
+            );
+            console.log(metadata);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    ```
+
+    -   #### OUTPUT
+
+    ```js
+    {
+        message: 'File updated successfully!',
+        // Path to the file which metadata was edited
+        file: '../../dir/to/the/sample.pdf',
+        // OR
+        // This type of path will be generated for streams
+        file: '../../path/to/dir/.tmp/0b00f9b2-cc7d-48b6-8fad-d7e2992de663'
+    }
+    ```
+
+    -   #### Options
+
+    | Name       | Type               | Description                                                                                                                                        |
+    | ---------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | `config`   | `string`           | **[Advanced]**. The path to the config file to use with exiftool.                                                                                  |
+    | `fileName` | `string`           | Custom cache file name.                                                                                                                            |
+    | `metadata` | `boolean`          | **_Default_** `metadata: false`.<br/>Returns the metadata of the file before modifying metadata will be returned.                                  |
+    | `new`      | `boolean`          | **_Priority_** `new` > `metadata`.<br/>**_Default_** `new: false`.<br/>Returns the metadata of the file after modifying metadata will be returned. |
+    | `tags`     | `[ExifWriteOPTag]` | Add new or edit existing metadata tags to the file.                                                                                                |
+
+    -   #### _ExifWriteOPTag_
+
+        | Name        | Type            | Description                                                                                                                                                                 |
+        | ----------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | `name`      | `string`        | The name of the metadata tag. If it's a custom tag, make sure to initialize the [`Metadata.configurator()`](#import--configure)                                             |
+        | `value`     | `any` or `null` | The value of the metadata tag. If the tag has no value then it will be removed from the file.                                                                               |
+        | `custom`    | `string`        | Advanced Exiftool writing command can be directly passed to `custom`.<br/>Read more about exiftool commands at:<br/>https://exiftool.org/exiftool_pod.html#WRITING-EXAMPLES |
+        | `empty_tag` | `boolean`       | **[DEPRECATED]**. Delete the current tag's value without deleting the whole tag from the file.                                                                              |
+
+### Cache
+
+-   #### Manually remove all cache.
 
 ```js
-{
-  message: 'File updated successfully!',
-  file: '../../dir/to/the/sample.pdf' // Path to the file which metadata was edited
-  // OR this type of path will be generated for streams
-  file: '../../path/to/dir/.tmp/0b00f9b2-cc7d-48b6-8fad-d7e2992de663'
+Metadata.clear();
+```
+
+-   #### Disable network caching.
+
+```js
+async function streamURL() {
+    const metadata = await Metadata.get("https://example.com/imagine.pdf", {
+        no_cache: true,
+    });
+    console.log(metadata);
 }
 ```
 
+Explicitly set 'no_cache' to true to disable caching for network file.
+
+-   #### Enable stream caching.
+
+```js
+async function streamFile() {
+    const rs = createReadStream("sample.pdf");
+    const metadata = await Metadata.get(rs, {
+        no_cache: false,
+    });
+}
+```
+
+Explicitly set 'no_cache' to false to enable caching for stream.
+
+## Advanced
+
+-   ### Custom Configuration
+
+    If Metadata.configurator does not meet the requirements. You can provide a custom configuration file with Metadata.get() or Metadata.set() function options.
+
+    -   #### sample.cfg
+
+    ```pm
+    # Example config file
+    %Image::ExifTool::UserDefined = (
+        'Image::ExifTool::Exif::Main' => {
+            d000 => {
+                Name => 'CUSTOM_TAG',
+                Writable => 'string',
+            },
+        },
+        'Image::ExifTool::PDF::Info' => {
+            CUSTOM_TAG => {
+                Name => 'CUSTOM_TAG',
+                Writable => 'string',
+            },
+        },
+    );
+    1; #end
+    ```
+
+    Read more: https://exiftool.org/config.html
+
+    -   #### Use custom configuration
+
+    ```js
+    async function read() {
+        try {
+            const metadata = await Metadata.get("image.jpg", {
+                config: "../path/to/sample.cfg",
+            });
+            console.log(metadata);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    ```
+
+-   ### Custom cache file name
+
+    This library does not support caching for stream passed as a parameter in such case you should provide something that could identify the cache file later. If you do not provide a cache file name a random name will be generated.<br/><br/>`no_cache: false` will be ignored for stream passed as a parameter, if `fileName` is not provided.
+
+    ```js
+    import { createReadStream } from "node:fs";
+
+    const rs = createReadStream("sample.pdf");
+    const metadata = await Metadata.get(rs, {
+        fileName: "sample.pdf",
+        no_cache: false,
+    });
+    console.log(metadata);
+    ```
+
+## Buy me a Coffee
+
+Support my work by buying me a coffee.<br/>
 <a href="https://www.buymeacoffee.com/anasshakil" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="margin-top:20px;height: 60px !important;width: 217px !important;" ></a>
 
 ### NOTE

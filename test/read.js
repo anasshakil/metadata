@@ -5,7 +5,7 @@ import Metadata from "../lib/index.js";
 
 async function read() {
     try {
-        const _file = path.join(__getDir(), ".tmp/e40e2f6a513ce6c3872c196c0fd750e5ecacfada97a5477744be2ec5053a1fa4");
+        const _file = path.join(__getDir(), "test/sample.pdf");
         const metadata = await Metadata.get(_file);
         console.log(metadata);
     } catch (e) {
@@ -34,7 +34,7 @@ async function streamFile() {
 async function streamURL() {
     try {
         const metadata = await Metadata.get("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", {
-            disable_cache: false
+            no_cache: false
         });
         console.log(metadata);
     } catch (e) {
@@ -42,6 +42,6 @@ async function streamURL() {
     }
 }
 
-// read();
+read();
 // streamFile();
 // streamURL();

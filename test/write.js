@@ -8,7 +8,12 @@ async function write() {
     try {
         const _file = path.join(__getDir(), "test/sample.pdf");
         const metadata = await Metadata.set(_file, {
+            new: true,
             tags: [
+                {
+                    name: "Author",
+                    value: "N/A"
+                },
                 {
                     name: "Sig",
                     value: crypto.randomUUID()
@@ -55,6 +60,6 @@ async function streamURL() {
     }
 }
 
-// write();
+write();
 // streamFile();
 // streamURL();
