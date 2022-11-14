@@ -9,6 +9,7 @@ An advanced Node.js interface to the exiftool. 🚀
 
 ## Table of Contents
 
+-   [Requirements](#requirements)
 -   [API](#api)
     -   [Extract Metadata](#extract-metadata)
     -   [Add/Edit Metadata](#addedit-metadata)
@@ -25,6 +26,10 @@ An advanced Node.js interface to the exiftool. 🚀
 ```bash
 npm install --save @enviro/metadata
 ```
+
+## Requirements
+
+Exiftool need **perl** to be installed on your system. Download perl from https://www.perl.org/get.html
 
 ## Import & Configure
 
