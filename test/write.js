@@ -13,10 +13,6 @@ async function write() {
                 {
                     name: "Author",
                     value: "N/A"
-                },
-                {
-                    name: "Sig",
-                    value: crypto.randomUUID()
                 }
             ]
         });
