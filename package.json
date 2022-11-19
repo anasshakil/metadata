@@ -14,7 +14,11 @@
     "keywords": [
         "metadata",
         "exif",
-        "exiftool"
+        "exiftool",
+        "tags",
+        "extract",
+        "edit",
+        "write"
     ],
     "author": "Ahmed Anas Shakil",
     "license": "ISC",
