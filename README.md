@@ -33,7 +33,7 @@ npm install --save @enviro/metadata
 ## Requirements
 
 -   Exiftool need perl to be installed on your system, download perl from https://www.perl.org/get.html
--   Node.js version >= 16.x
+-   Node.js version >= **16.x**
 
 ## Import & Configure
 
@@ -66,21 +66,21 @@ async function config() {
 
 -   #### Options
 
-    | Name               | Type              | Description                                                                                                                                   |
-    | ------------------ | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-    | `default`          | `boolean`         | **[Advanced]**. The default configuration use hex keys in file. If you want to use key name in file, set this to explicitly `default: false`. |
-    | `keyCodeEvaluator` | `number`          | **[Advanced]**. The value must be greater than **53248**. This is the default key for the first user-defined tag.                             |
-    | `no_cache_cleanup` | `boolean`         | This will stop auto cache cleaner on node server startup.                                                                                     |
-    | `tags`             | `[ExifCustomTag]` | Configure Exiftool to add or remove new metadata tags to the file.                                                                            |
+    | Name               | Type              | Description                                                                                                                                      |
+    | ------------------ | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+    | `default`          | `boolean`         | **[Advanced]**<br/>The default configuration use hex keys in file. If you want to use key name in file, set this to explicitly `default: false`. |
+    | `keyCodeEvaluator` | `number`          | **[Advanced]**<br/>The value must be greater than **53248**. This is the default key for the first user-defined tag.                             |
+    | `no_cache_cleanup` | `boolean`         | This will stop auto cache cleaner on node server startup.                                                                                        |
+    | `tags`             | `[ExifCustomTag]` | Configure Exiftool to add or remove new metadata tags to the file.                                                                               |
 
     -   #### _ExifCustomTag_
 
-        | Name               | Type                           | Description                                                                                                                                                                   |
-        | ------------------ | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-        | `name`             | `string`                       | The name of the custom tag.                                                                                                                                                   |
-        | `type`             | `"string"`                     | Type of the custom tag's value. You can pass custom valid type in here which is supported by exif tag group.                                                                  |
-        | `exifPropGroup`    | `"Exif"`, `"PDF"` or `string`  | The custom tag's belongs to this group. Custom group can be passed as an argument. Read more at [Family 0 (Information Type)]: https://exiftool.org/#groups                   |
-        | `exifPropSubGroup` | `"Main"`, `"Info"` or `string` | The custom tag's belongs to this specific sub group. Custom sub-group can be passed as an argument. Read more at [Family 1 (Specific Location)]: https://exiftool.org/#groups |
+        | Name               | Type                             | Description                                                                                                                                                                   |
+        | ------------------ | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | `name`             | `string`                         | The name of the custom tag.                                                                                                                                                   |
+        | `type`             | `"string"`                       | Type of the custom tag's value. You can pass custom valid type in here which is supported by exif tag group.                                                                  |
+        | `exifPropGroup`    | `"Exif"` \| `"PDF"` \| `string`  | The custom tag's belongs to this group. Custom group can be passed as an argument. Read more at [Family 0 (Information Type)]: https://exiftool.org/#groups                   |
+        | `exifPropSubGroup` | `"Main"` \| `"Info"` \| `string` | The custom tag's belongs to this specific sub group. Custom sub-group can be passed as an argument. Read more at [Family 1 (Specific Location)]: https://exiftool.org/#groups |
 
 ## API
 
@@ -296,7 +296,7 @@ async function config() {
         | Name        | Type            | Description                                                                                                                                                                                  |
         | ----------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
         | `name`      | `string`        | The name of the metadata tag. If it's a custom tag, make sure to initialize the [`Metadata.configurator()`](#import--configure)                                                              |
-        | `value`     | `any` or `null` | The value of the metadata tag. If the tag has no value then it will be removed from the file.                                                                                                |
+        | `value`     | `any` \| `null` | The value of the metadata tag. If the tag has no value then it will be removed from the file.                                                                                                |
         | `custom`    | `string`        | **[Advanced]**<br/>Custom Exiftool writing command can be directly passed to `custom`.<br/>Read more about exiftool commands at:<br/>https://exiftool.org/exiftool_pod.html#WRITING-EXAMPLES |
         | `empty_tag` | `boolean`       | **[DEPRECATED]**<br/>Delete the current tag's value without deleting the whole tag from the file.                                                                                            |
 
