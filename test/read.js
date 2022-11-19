@@ -34,7 +34,8 @@ async function streamFile() {
 async function streamURL() {
     try {
         const metadata = await Metadata.get("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", {
-            no_cache: true
+            no_cache: true,
+            all: true
         });
         console.log(metadata);
     } catch (e) {

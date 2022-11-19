@@ -13,9 +13,12 @@ An advanced Node.js interface to the exiftool. 🚀
 -   [API](#api)
     -   [Extract Metadata](#extract-metadata)
     -   [Add/Edit Metadata](#addedit-metadata)
+    -   [Copy Metadata](#copy-metadata)
+    -   [Read/Write Options](#readwrite-options)
     -   [Cache](#cache)
 -   [Advanced](#advanced)
     -   [Custom Configuration](#custom-configuration)
+    -   [Performance](#performance)
 -   [Buy me a Coffee](#buy-me-a-coffee)
 -   [Test](#test)
     -   [Jest](#jest)
@@ -29,7 +32,8 @@ npm install --save @enviro/metadata
 
 ## Requirements
 
-Exiftool need **perl** to be installed on your system. Download perl from https://www.perl.org/get.html
+-   Exiftool need perl to be installed on your system, download perl from https://www.perl.org/get.html
+-   Node.js version >= 16.x
 
 ## Import & Configure
 
@@ -169,20 +173,28 @@ async function config() {
 
     -   #### Options
 
-    | Name       | Type              | Description                                                                                                                                                                                                                                                 |
-    | ---------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | `config`   | `string`          | **[Advanced]**. The path to the config file to use with exiftool.                                                                                                                                                                                           |
-    | `fileName` | `string`          | [Read: Cache file name](#custom-cache-file-name).                                                                                                                                                                                                           |
-    | `no_cache` | `boolean`         | This option doesn't work on local file path passed as a parameter. `no_cache: true` default for stream, read more about [Stream caching](#custom-cache-file-name). `no_cache: false` default for network file, read more [Network stream](#network-stream). |
-    | `tags`     | `[ExifReadOPTag]` | Filter the output metadata tags either excluded them or only include them.                                                                                                                                                                                  |
+    | Name       | Type               | Description                                                                                                                                                                                                                                                 |
+    | ---------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | `fileName` | `string`           | [Read: Cache file name](#custom-cache-file-name).                                                                                                                                                                                                           |
+    | `no_cache` | `boolean`          | This option doesn't work on local file path passed as a parameter. `no_cache: true` default for stream, read more about [Stream caching](#custom-cache-file-name). `no_cache: false` default for network file, read more [Network stream](#network-stream). |
+    | `tags`     | `[ExifReadOPTag]`  | Filter the output metadata tags either excluded them or only include them.                                                                                                                                                                                  |
+    | `all`      | `boolean`          | [Default: `false`]. If `true`, all the metadata tags will be returned. This will override the `tags` option. **NOTE**: This option can cause significant performance issues. Use it only if you need all the metadata tags.                                 |
+    | `batch`    | `BatchReadOptions` | Options for batch processing.                                                                                                                                                                                                                               |
 
     -   #### _ExifReadOPTag_
 
-        | Name      | Type      | Description                                                                                                                                                                 |
-        | --------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-        | `name`    | `string`  | Name of the metadata tag.                                                                                                                                                   |
-        | `exclude` | `boolean` | `exclude: true` exclude this tag from the result. `exclude: false` make this tag exclusive.                                                                                 |
-        | `custom`  | `string`  | Advanced Exiftool reading command can be directly passed to `custom`.<br/>Read more about exiftool commands at:<br/>https://exiftool.org/exiftool_pod.html#READING-EXAMPLES |
+        | Name      | Type      | Description                                                                                                                                                                                  |
+        | --------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | `name`    | `string`  | Name of the metadata tag.                                                                                                                                                                    |
+        | `exclude` | `boolean` | `exclude: true` exclude this tag from the result. `exclude: false` make this tag exclusive.                                                                                                  |
+        | `custom`  | `string`  | **[Advanced]**<br/>Custom Exiftool reading command can be directly passed to `custom`.<br/>Read more about exiftool commands at:<br/>https://exiftool.org/exiftool_pod.html#READING-EXAMPLES |
+
+    -   #### _BatchReadOptions_
+
+        | Name               | Type                    | Description                                                                                                                                                                                          |
+        | ------------------ | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | `no_network_cache` | `boolean` \| `[string]` | **_Default_ `false`**.<br/>If `true`, the network files will not be cached. If specified list of URLs provided, than that URLs will not be cached.                                                   |
+        | `no_stream_cache`  | `[string]`              | **_Default_ `null`**.<br/>If file name is not valid for stream perspective, then that specific stream will not be cached. `[]` or `null` means all streams will be discarded after reading metadata. |
 
 -   ### Add/Edit Metadata
 
@@ -270,22 +282,73 @@ async function config() {
 
     -   #### Options
 
-    | Name       | Type               | Description                                                                                                                                        |
-    | ---------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | `config`   | `string`           | **[Advanced]**. The path to the config file to use with exiftool.                                                                                  |
-    | `fileName` | `string`           | Custom cache file name.                                                                                                                            |
-    | `metadata` | `boolean`          | **_Default_** `metadata: false`.<br/>Returns the metadata of the file before modifying metadata will be returned.                                  |
-    | `new`      | `boolean`          | **_Priority_** `new` > `metadata`.<br/>**_Default_** `new: false`.<br/>Returns the metadata of the file after modifying metadata will be returned. |
-    | `tags`     | `[ExifWriteOPTag]` | Add new or edit existing metadata tags to the file.                                                                                                |
+    | Name         | Type               | Description                                                                                                                                                                                                                        |
+    | ------------ | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | `fileName`   | `string`           | Custom cache file name.                                                                                                                                                                                                            |
+    | `metadata`   | `boolean`          | **_Default_** `metadata: false`.<br/>Returns the metadata of the file before modifying metadata will be returned.                                                                                                                  |
+    | `new`        | `boolean`          | **[!] _Priority_** `new` > `metadata`.<br/>**_Default_** `new: false`.<br/>Returns the metadata of the file after modifying metadata will be returned.                                                                             |
+    | `all`        | `boolean`          | **_Default_ `false`**.<br/>If `true`, all the metadata tags will be returned. This will override the `tags` option. **NOTE**: This option can cause significant performance issues. Use it only if you need all the metadata tags. |
+    | `delete_all` | `boolean`          | **[UNSAFE]**<br/>**_Default_ `false`**.<br/>If `true` all the metadata tags will be deleted from the file. New `tags` will remain unaffected.                                                                                      |
+    | `tags`       | `[ExifWriteOPTag]` | Add new or edit existing metadata tags to the file.                                                                                                                                                                                |
 
     -   #### _ExifWriteOPTag_
 
-        | Name        | Type            | Description                                                                                                                                                                 |
-        | ----------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-        | `name`      | `string`        | The name of the metadata tag. If it's a custom tag, make sure to initialize the [`Metadata.configurator()`](#import--configure)                                             |
-        | `value`     | `any` or `null` | The value of the metadata tag. If the tag has no value then it will be removed from the file.                                                                               |
-        | `custom`    | `string`        | Advanced Exiftool writing command can be directly passed to `custom`.<br/>Read more about exiftool commands at:<br/>https://exiftool.org/exiftool_pod.html#WRITING-EXAMPLES |
-        | `empty_tag` | `boolean`       | **[DEPRECATED]**. Delete the current tag's value without deleting the whole tag from the file.                                                                              |
+        | Name        | Type            | Description                                                                                                                                                                                  |
+        | ----------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | `name`      | `string`        | The name of the metadata tag. If it's a custom tag, make sure to initialize the [`Metadata.configurator()`](#import--configure)                                                              |
+        | `value`     | `any` or `null` | The value of the metadata tag. If the tag has no value then it will be removed from the file.                                                                                                |
+        | `custom`    | `string`        | **[Advanced]**<br/>Custom Exiftool writing command can be directly passed to `custom`.<br/>Read more about exiftool commands at:<br/>https://exiftool.org/exiftool_pod.html#WRITING-EXAMPLES |
+        | `empty_tag` | `boolean`       | **[DEPRECATED]**<br/>Delete the current tag's value without deleting the whole tag from the file.                                                                                            |
+
+-   ### Copy Metadata
+
+    This function allows to copy the metadata from one file or directory to another file or directory.
+
+    ```js
+    async function copyFromFileToStream() {
+        try {
+            const stream = createReadStream("/path/to/dir/img_2.jpg");
+            const result = await Metadata.copy(
+                "/path/to/dir/img_1.jpg",
+                stream,
+                {
+                    src: {
+                        // metadata: true,
+                        tags: [
+                            {
+                                name: "Author",
+                            },
+                        ],
+                    },
+                    dst: {
+                        // metadata: true,
+                        // new: true,
+                        tags: [
+                            {
+                                name: "Author",
+                            },
+                        ],
+                    },
+                }
+            );
+            console.log(JSON.stringify(result, null, 2));
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    ```
+
+    The above code will copy the `Author` tag from image img_1.jpg and set it to img_2.jpg, but dst overrides the `Author` tag to be deleted. Hence, the tag will be removed from the image img_2.jpg.
+
+-   ### Read/Write Options
+
+    These options can be passed to both read, write and copy functions.
+
+    -   #### _ExifMetadataReadWriteOptions_
+        | Name                 | Type      | Description                                                                                                                               |
+        | -------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+        | `config`             | `string`  | **[Advanced]**<br/>The path to the config file to use with exiftool.                                                                      |
+        | `del_cache_on_error` | `boolean` | **_Default_ `false`**<br/>If `true`, the temporary file will be deleted if an error occurs.<br/>**Recommended** to use with stream cache. |
 
 ### Cache
 
@@ -379,6 +442,52 @@ Explicitly set 'no_cache' to false to enable caching for stream.
     });
     console.log(metadata);
     ```
+
+-   ### Performance
+
+    There is a significant overhead in loading ExifTool, so performance may be greatly improved by taking advantage of ExifTool's batch processing capabilities.
+
+    -   ### Batch Processing
+        This allows to process multiple files in one function call, and helps to reduce the startup overhead.
+        Sample batch processing code can be found in the test/batch directory.
+    -   #### Read Metadata
+
+        ```js
+        async function readMultipleFromDisk() {
+            try {
+                const metadata = await Metadata.get([
+                    "/path/to/dir/samples/img_1.jpg",
+                    "/path/to/dir/samples/img_2.jpg",
+                    ...
+                ]);
+                console.log(metadata);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+        ```
+
+    -   #### Edit/Write Metadata
+
+        ```js
+        async function writeMultipleFromDirectory() {
+            try {
+                const metadata = await Metadata.set("../../path/to/dir", {
+                    new: true,
+                    metadata: true,
+                    tags: [
+                        {
+                            name: "Author",
+                            value: "John Doe",
+                        },
+                    ],
+                });
+                console.log(JSON.stringify(metadata, null, 4));
+            } catch (e) {
+                console.error(e);
+            }
+        }
+        ```
 
 ## Buy me a Coffee
 

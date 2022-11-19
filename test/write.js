@@ -42,7 +42,8 @@ async function streamFile() {
 
 async function streamURL() {
     try {
-        const metadata = await Metadata.set("https://research.nhm.org/pdfs/10840/10840.pdf", {
+        const metadata = await Metadata.set("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", {
+            del_cache_on_error: true,
             tags: [
                 {
                     name: "Sig",
@@ -56,6 +57,6 @@ async function streamURL() {
     }
 }
 
-write();
+// write();
 // streamFile();
-// streamURL();
+streamURL();

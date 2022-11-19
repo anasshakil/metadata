@@ -10,7 +10,7 @@ async function readMultipleFromNet() {
             "https://i.imgur.com/poGB3tF.jpeg",
         ], {
             batch: {
-                no_network_cache: false
+                no_network_cache: true
             }
         });
         console.log(metadata);
@@ -33,8 +33,8 @@ async function readMultipleFromStream() {
 async function readMultipleFromDisk() {
     try {
         const metadata = await Metadata.get([
-            path.join(__getDir(), "test/sample.pdf"),
-            path.join(__getDir(), "test/s3.jpg")
+            path.join(__getDir(), "test/samples/sample.pdf"),
+            path.join(__getDir(), "test/samples/s3.jpg")
         ]);
         console.log(metadata);
     } catch (e) {
@@ -58,7 +58,11 @@ async function readAllFromMixed() {
             "https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_10mb.mp4",
             path.join(__getDir(), "test/sample.pdf"),
             s2,
-        ]);
+        ], {
+            batch: {
+                no_network_cache: true
+            }
+        });
         // Output: In sequence of input array.
         console.log(metadata);
     } catch (e) {
