@@ -342,7 +342,7 @@ async function config() {
 
 -   ### Read/Write Options
 
-    These options can be passed to both read, write and copy functions.
+    These options can be passed to read, write and copy functions.
 
     -   #### _ExifMetadataReadWriteOptions_
         | Name                 | Type      | Description                                                                                                                               |
