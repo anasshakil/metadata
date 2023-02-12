@@ -1,5 +1,7 @@
 # Node-Metadata
 
+### Pre-Release Version
+
 An advanced Node.js interface to the exiftool. 🚀
 
 > “An amazing level of senseless perfectionism,
@@ -19,15 +21,17 @@ An advanced Node.js interface to the exiftool. 🚀
 -   [Advanced](#advanced)
     -   [Custom Configuration](#custom-configuration)
     -   [Performance](#performance)
+-   [_Experimental Features_](#experimental-features)
 -   [Buy me a Coffee](#buy-me-a-coffee)
 -   [Test](#test)
     -   [Jest](#jest)
 -   [Tools](#tools)
+-   [Known Issues](#known-issues)
 
 ## Install
 
 ```bash
-npm install --save @enviro/metadata
+npm install --save @enviro/metadata@1.4.0
 ```
 
 ## Requirements
@@ -489,6 +493,12 @@ Explicitly set 'no_cache' to false to enable caching for stream.
         }
         ```
 
+-   ### _Experimental Features_
+    Experimental features can be unstable or maybe subject to change, using them in a **production** environment is **not recommended**.
+    | Name | Type | Description |
+    | -------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+    | `fast` | `boolean` | **[Advanced]**[Default: `false`]. If `true`, a dedicated process will be started for the binaries. This can significantly increase performance. |
+
 ## Buy me a Coffee
 
 Support my work by buying me a coffee.<br/>
@@ -511,5 +521,9 @@ sample implementation can be found inside [test directory].
 ## Tools
 
 -   ##### Comming Soon
+
+## Known Issues
+
+-   `fast` mode can break metadata output when reading very large number of files.
 
 [test directory]: https://github.com/anasshakil/metadata/tree/main/test

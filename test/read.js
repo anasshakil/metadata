@@ -1,12 +1,16 @@
 import { createReadStream } from "node:fs";
 import path from "node:path";
-import { __getDir } from "../__dir.js";
+import { __dir__ } from "../__dir.js";
 import Metadata from "../lib/index.js";
 
 async function read() {
     try {
-        const _file = path.join(__getDir(), "test/sample.pdf");
-        const metadata = await Metadata.get(_file);
+        const _file = path.join(__dir__(), "test/samples/s1.pdf");
+        const metadata = await Metadata.get(_file, {
+            all: true,
+            stay_open: true
+        });
+        // console.log(Object.keys(metadata[0]).length)
         console.log(metadata);
     } catch (e) {
         console.error("e", e);
@@ -15,7 +19,7 @@ async function read() {
 
 async function streamFile() {
     try {
-        const rs = createReadStream(path.join(__getDir(), "test/sample.pdf"))
+        const rs = createReadStream(path.join(__dir__(), "test/sample.pdf"))
         const metadata = await Metadata.get(rs, {
             tags: [
                 {
@@ -43,6 +47,6 @@ async function streamURL() {
     }
 }
 
-// read();
+read();
 // streamFile();
-streamURL();
+// streamURL();

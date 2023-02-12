@@ -1,12 +1,12 @@
 import Metadata from "../lib/index.js";
 import crypto from "node:crypto";
 import path from "node:path";
-import { __getDir } from "../__dir.js";
+import { __dir__ } from "../__dir.js";
 import { createReadStream } from "node:fs";
 
 async function write() {
     try {
-        const _file = path.join(__getDir(), "test/sample.pdf");
+        const _file = path.join(__dir__(), "test/sample.pdf");
         const metadata = await Metadata.set(_file, {
             new: true,
             tags: [
@@ -24,7 +24,7 @@ async function write() {
 
 async function streamFile() {
     try {
-        const rs = createReadStream(path.join(__getDir(), "test/sample.pdf"))
+        const rs = createReadStream(path.join(__dir__(), "test/sample.pdf"))
         const metadata = await Metadata.set(rs, {
             tags: [
                 {
