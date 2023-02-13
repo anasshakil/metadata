@@ -44,9 +44,10 @@ async function writeMultipleFromStream() {
 async function writeMultipleFromDisk() {
     try {
         const metadata = await Metadata.set([
-            path.join(__dir__(), "test/sample.pdf"),
-            path.join(__dir__(), "test/s3.jpg")
+            path.join(__dir__(), "test/samples/s1.pdf"),
+            path.join(__dir__(), "test/samples/s3.jpg")
         ], {
+            fast: true,
             tags: [
                 {
                     name: "Author",
@@ -105,6 +106,6 @@ async function writeAllFromMixed() {
 
 // writeMultipleFromNet();
 // writeMultipleFromStream();
-// writeMultipleFromDisk();
-writeMultipleFromDirectory();
+writeMultipleFromDisk();
+// writeMultipleFromDirectory();
 // writeAllFromMixed();

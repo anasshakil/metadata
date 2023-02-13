@@ -8,6 +8,7 @@ async function copyFromFileToStream() {
         const _file1 = path.join(__dir__(), "test", "samples", "s1.pdf");
         const _file2 = createReadStream(path.join(__dir__(), "test", "samples", "s2.pdf"));
         const result = await Metadata.copy(_file1, _file2, {
+            fast: true,
             src: {
                 // metadata: true,
                 tags: [

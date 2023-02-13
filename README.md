@@ -31,7 +31,7 @@ An advanced Node.js interface to the exiftool. 🚀
 ## Install
 
 ```bash
-npm install --save @enviro/metadata@1.4.0
+npm install --save @enviro/metadata@1.3.2
 ```
 
 ## Requirements
@@ -346,13 +346,14 @@ async function config() {
 
 -   ### Read/Write Options
 
-    These options can be passed to both read, write and copy functions.
+    These options can be passed to read, write, and copy methods.
 
     -   #### _ExifMetadataReadWriteOptions_
-        | Name                 | Type      | Description                                                                                                                               |
-        | -------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-        | `config`             | `string`  | **[Advanced]**<br/>The path to the config file to use with exiftool.                                                                      |
-        | `del_cache_on_error` | `boolean` | **_Default_ `false`**<br/>If `true`, the temporary file will be deleted if an error occurs.<br/>**Recommended** to use with stream cache. |
+        | Name                 | Type      | Description                                                                                                                                                                                                                                                                                                                                                           |
+        | -------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | `config`             | `string`  | **[Advanced]**<br/>The path to the config file to use with exiftool.                                                                                                                                                                                                                                                                                                  |
+        | `del_cache_on_error` | `boolean` | **_Default_ `false`**<br/>If `true`, the temporary file will be deleted if an error occurs.<br/>**Recommended** to use with stream cache.                                                                                                                                                                                                                             |
+        | `stream`             | `boolean` | **[Advanced]**</br>[Default: `false`]. If `true`, instead of returning metadata in a JSON compatible object, an instance of readable stream containing metadata string will be returned.</br>**NOTE**: This option will return raw metadata instead of JSON, custom parser will be required to parse JSON. JSON.parse() will always throw an error with `fast: true`. |
 
 ### Cache
 
@@ -525,5 +526,6 @@ sample implementation can be found inside [test directory].
 ## Known Issues
 
 -   `fast` mode can break metadata output when reading very large number of files.
+    </br>**STATUS:** Resolved in v1.3.2
 
 [test directory]: https://github.com/anasshakil/metadata/tree/main/test

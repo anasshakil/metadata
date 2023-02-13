@@ -34,30 +34,34 @@ async function readMultipleFromDisk() {
     try {
         const metadata = await Metadata.get([
             path.join(__dir__(), "test/samples/s1.pdf"),
-            // path.join(__dir__(), "test/samples/s3.jpg"),
-            // path.join(__dir__(), "test/samples/s1.pdf"),
-            // path.join(__dir__(), "test/samples/s3.jpg"),
-            // path.join(__dir__(), "test/samples/s1.pdf"),
-            // path.join(__dir__(), "test/samples/s3.jpg"),
-            // path.join(__dir__(), "test/samples/s1.pdf"),
-            // path.join(__dir__(), "test/samples/s3.jpg"),
-            // path.join(__dir__(), "test/samples/s1.pdf"),
-            // path.join(__dir__(), "test/samples/s3.jpg"),
-            // path.join(__dir__(), "test/samples/s1.pdf"),
-            // path.join(__dir__(), "test/samples/s3.jpg"),
-            // path.join(__dir__(), "test/samples/s1.pdf"),
-            // path.join(__dir__(), "test/samples/s3.jpg"),
-            // path.join(__dir__(), "test/samples/s1.pdf"),
-            // path.join(__dir__(), "test/samples/s3.jpg"),
-            // path.join(__dir__(), "test/samples/s1.pdf"),
-            // path.join(__dir__(), "test/samples/s3.jpg"),
-            // path.join(__dir__(), "test/samples/s1.pdf"),
-            // path.join(__dir__(), "test/samples/s3.jpg"),
+            path.join(__dir__(), "test/samples/s3.jpg"),
+            path.join(__dir__(), "test/samples/s1.pdf"),
+            path.join(__dir__(), "test/samples/s3.jpg"),
+            path.join(__dir__(), "test/samples/s1.pdf"),
+            path.join(__dir__(), "test/samples/s3.jpg"),
+            path.join(__dir__(), "test/samples/s1.pdf"),
+            path.join(__dir__(), "test/samples/s3.jpg"),
+            path.join(__dir__(), "test/samples/s1.pdf"),
+            path.join(__dir__(), "test/samples/s3.jpg"),
+            path.join(__dir__(), "test/samples/s1.pdf"),
+            path.join(__dir__(), "test/samples/s3.jpg"),
+            path.join(__dir__(), "test/samples/s1.pdf"),
+            path.join(__dir__(), "test/samples/s3.jpg"),
+            path.join(__dir__(), "test/samples/s1.pdf"),
+            path.join(__dir__(), "test/samples/s3.jpg"),
+            path.join(__dir__(), "test/samples/s1.pdf"),
+            path.join(__dir__(), "test/samples/s3.jpg"),
+            path.join(__dir__(), "test/samples/s1.pdf"),
+            path.join(__dir__(), "test/samples/s3.jpg"),
         ], {
             fast: true,
-            tags: [{ name: "SourceFile" }]
+            // stream: true
+            // tags: [{ name: "SourceFile" }]
         });
-        // console.log("Metadata", metadata);
+        // metadata.on("data", (d) => {
+        // implement custom parser 
+        // })
+        console.log("Metadata", metadata);
     } catch (e) {
         console.error(e);
     }
@@ -97,6 +101,17 @@ async function readAllFromMixed() {
     await readMultipleFromDisk();
     console.log("*****************************");
     await readMultipleFromDisk();
-})()
+    console.log("*****************************");
+    await readMultipleFromDisk();
+});
+
+(() => {
+    readMultipleFromDisk();
+    console.log("*****************************");
+    readMultipleFromDisk();
+    console.log("*****************************");
+    readMultipleFromDisk();
+})();
+
 // readMultipleFromDirectory();
 // readAllFromMixed();
