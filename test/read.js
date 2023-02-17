@@ -7,8 +7,9 @@ async function read() {
     try {
         const _file = path.join(__dir__(), "test/samples/s1.pdf");
         const metadata = await Metadata.get(_file, {
-            all: true,
-            stay_open: true
+            path: path.join(__dir__(), ".exiftool/exiftool"),
+            tags: [{ name: "Author" }],
+            fast: true,
         });
         // console.log(Object.keys(metadata[0]).length)
         console.log(metadata);
@@ -19,28 +20,30 @@ async function read() {
 
 async function streamFile() {
     try {
-        const rs = createReadStream(path.join(__dir__(), "test/sample.pdf"))
+        const rs = createReadStream(path.join(__dir__(), "test/sample.pdf"));
         const metadata = await Metadata.get(rs, {
             tags: [
                 {
                     name: "FileName",
-                    exclude: true
-                }
-            ]
-        })
-        console.log(metadata)
+                    exclude: true,
+                },
+            ],
+        });
+        console.log(metadata);
     } catch (e) {
-        console.error("e", e)
+        console.error("e", e);
     }
 }
 
-
 async function streamURL() {
     try {
-        const metadata = await Metadata.get("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", {
-            no_cache: true,
-            all: true
-        });
+        const metadata = await Metadata.get(
+            "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+            {
+                no_cache: true,
+                all: true,
+            }
+        );
         console.log(metadata);
     } catch (e) {
         console.error("e", e);
