@@ -1,5 +1,4 @@
 import Metadata from "../lib/index.js";
-import crypto from "node:crypto";
 import path from "node:path";
 import { __dir__ } from "../__dir.js";
 import { createReadStream } from "node:fs";
@@ -8,6 +7,7 @@ async function write(auto = false) {
     try {
         const _file = path.join(__dir__(), "test/samples/test.pdf");
         const metadata = await Metadata.set(_file, {
+            path: path.join(__dir__(), ".exiftool/exiftool"),
             metadata: true,
             new: true,
             auto: true,

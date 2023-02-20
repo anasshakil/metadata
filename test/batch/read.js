@@ -35,30 +35,14 @@ async function readMultipleFromStream() {
 
 async function readMultipleFromDisk() {
     try {
+        //BUG Spawn close
         const metadata = await Metadata.get(
             [
                 // path.join(__dir__(), "test/samples/404.pdf"),
                 path.join(__dir__(), "test/samples/s3.jpg"),
-                // path.join(__dir__(), "test/samples/s1.pdf"),
-                // path.join(__dir__(), "test/samples/s3.jpg"),
-                // path.join(__dir__(), "test/samples/s1.pdf"),
-                // path.join(__dir__(), "test/samples/s3.jpg"),
-                // path.join(__dir__(), "test/samples/s1.pdf"),
-                // path.join(__dir__(), "test/samples/s3.jpg"),
-                // path.join(__dir__(), "test/samples/s1.pdf"),
-                // path.join(__dir__(), "test/samples/s3.jpg"),
-                // path.join(__dir__(), "test/samples/s1.pdf"),
-                // path.join(__dir__(), "test/samples/s3.jpg"),
-                // path.join(__dir__(), "test/samples/s1.pdf"),
-                // path.join(__dir__(), "test/samples/s3.jpg"),
-                // path.join(__dir__(), "test/samples/s1.pdf"),
-                // path.join(__dir__(), "test/samples/s3.jpg"),
-                // path.join(__dir__(), "test/samples/s1.pdf"),
-                // path.join(__dir__(), "test/samples/s3.jpg"),
-                // path.join(__dir__(), "test/samples/s1.pdf"),
-                // path.join(__dir__(), "test/samples/s3.jpg"),
             ],
             {
+                // path: path.join(__dir__(), ".exiftool/exiftool"),
                 fast: true,
                 // stream: true
                 tags: [{ name: "SourceFile" }],
@@ -69,7 +53,7 @@ async function readMultipleFromDisk() {
         // })
         console.log("Metadata", metadata);
     } catch (e) {
-        console.error(e);
+        // console.error(e);
     }
 }
 
@@ -111,7 +95,9 @@ async function readAllFromMixed() {
     console.log("*****************************");
     await readMultipleFromDisk();
     console.log("*****************************");
-    await readMultipleFromDisk();
+    // await readMultipleFromDisk();
+    // console.log("*****************************");
+    // await readMultipleFromDisk();
 })();
 
 (() => {

@@ -17,7 +17,7 @@
         "exiftool"
     ],
     "author": "Ahmed Anas Shakil",
-    "license": "ISC",
+    "license": "MIT",
     "bugs": {
         "url": "https://github.com/anasshakil/metadata/issues"
     },
