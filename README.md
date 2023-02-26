@@ -35,9 +35,9 @@ npm install --save @enviro/metadata@1.3.2
 
 ## Requirements
 
--   Exiftool need perl to be installed on your system, download perl from https://www.perl.org/get.html
+-   Exiftool need perl to be installed on your system, [Download Perl](https://www.perl.org).
 -   Node.js version >= 16.x
--   ExifTool is no longer included with this package. [Download ExifTool](https://sourceforge.net/projects/exiftool/).</br>Read more about seamless ExifTool integration using `path` option in [documentation](#ExifMetadataReadWriteOptions).
+-   ExifTool is no longer included with this package, [Download ExifTool](https://sourceforge.net/projects/exiftool/).</br>Read more about seamless ExifTool integration using `path` option in [documentation](#ExifMetadataReadWriteOptions).
 
 ## Import & Configure
 
@@ -72,8 +72,8 @@ async function config() {
 
     | Name | Type | Description |
     | --- | --- | --- |
-    | `default` | `boolean` | **[Advanced]**. The default configuration use hex keys in file. If you want to use key name in file, set this to explicitly `default: false`. |
-    | `keyCodeEvaluator` | `number` | **[Advanced]**. The value must be greater than **53248**. This is the default key for the first user-defined tag. |
+    | `default` | `boolean` | **[Advanced]**</br>The default configuration use hex keys in file. If you want to use key name in file, set this to explicitly `default: false`. |
+    | `keyCodeEvaluator` | `number` | **[Advanced]**</br>The value must be greater than **53248**. This is the default key for the first user-defined tag. |
     | `no_cache_cleanup` | `boolean` | This will stop auto cache cleaner on node server startup. |
     | `tags` | `[ExifCustomTag]` | Configure Exiftool to add or remove new metadata tags to the file. |
 
@@ -83,8 +83,8 @@ async function config() {
         | --- | --- | --- |
         | `name` | `string` | The name of the custom tag. |
         | `type` | `"string"` | Type of the custom tag's value. You can pass custom valid type in here which is supported by exif tag group. |
-        | `exifPropGroup` | `"Exif"`, `"PDF"` or `string` | The custom tag's belongs to this group. Custom group can be passed as an argument. Read more at [Family 0 (Information Type)]: https://exiftool.org/#groups |
-        | `exifPropSubGroup` | `"Main"`, `"Info"` or `string` | The custom tag's belongs to this specific sub group. Custom sub-group can be passed as an argument. Read more at [Family 1 (Specific Location)]: https://exiftool.org/#groups |
+        | `exifPropGroup` | `"Exif"`\|`"PDF"`\| `string` | The custom tag's belongs to this group. Custom group can be passed as an argument. Read more at [Family 0 (Information Type)](https://exiftool.org/#groups) |
+        | `exifPropSubGroup` | `"Main"`\|`"Info"`\| `string` | The custom tag's belongs to this specific sub group. Custom sub-group can be passed as an argument. Read more at [Family 1 (Specific Location)](https://exiftool.org/#groups) |
 
 ## API
 
@@ -96,7 +96,8 @@ async function config() {
     async function read() {
         try {
             const metadata = await Metadata.get("test.pdf", {
-                path: "path/to/ExifTool",
+                // path not required, since ExifTool is accessible from terminal using exiftool.
+                // path: "exiftool",
                 tags: [
                     {
                         name: "FileName",
@@ -149,7 +150,9 @@ async function config() {
     async function streamFile() {
         try {
             const rs = createReadStream("sample.pdf");
-            const metadata = await Metadata.get(rs);
+            const metadata = await Metadata.get(rs, {
+                path: "path/to/ExifTool",
+            });
             console.log(metadata);
         } catch (e) {
             console.error(e);
@@ -179,10 +182,10 @@ async function config() {
 
     | Name | Type | Description |
     | --- | --- | --- |
-    | `fileName` | `string` | [Read: Cache file name](#custom-cache-file-name). |
+    | `fileName` | `string` | Read: [Cache file name](#custom-cache-file-name). |
     | `no_cache` | `boolean` | This option doesn't work on local file path passed as a parameter. `no_cache: true` default for stream, read more about [Stream caching](#custom-cache-file-name). `no_cache: false` default for network file, read more [Network stream](#network-stream). |
     | `tags` | `[ExifReadOPTag]` | Filter the output metadata tags either excluded them or only include them. |
-    | `all` | `boolean` | [Default: `false`]. If `true`, all the metadata tags will be returned. This will override the `tags` option. **NOTE**: This option can cause significant performance issues. Use it only if you need all the metadata tags. |
+    | `all` | `boolean` | **_Default_ `false`**</br>If `true`, all the metadata tags will be returned. This will override the `tags` option.</br>**NOTE**: This option can cause significant performance issues. Use it only if you need all the metadata tags. |
     | `batch` | `BatchReadOptions` | Options for batch processing. |
 
     -   #### _ExifReadOPTag_
@@ -191,13 +194,13 @@ async function config() {
         | --- | --- | --- |
         | `name` | `string` | Name of the metadata tag. |
         | `exclude` | `boolean` | `exclude: true` exclude this tag from the result. `exclude: false` make this tag exclusive. |
-        | `custom` | `string` | **[Advanced]**<br/>Custom Exiftool reading command can be directly passed to `custom`.<br/>Read more about exiftool commands at:<br/>https://exiftool.org/exiftool_pod.html#READING-EXAMPLES |
+        | `custom` | `string` | **[Advanced]**<br/>Custom Exiftool reading command can be directly passed to `custom`.<br/>Read more about [exiftool commands](https://exiftool.org/exiftool_pod.html#READING-EXAMPLES). |
 
     -   #### _BatchReadOptions_
 
         | Name | Type | Description |
         | --- | --- | --- |
-        | `no_network_cache` | `boolean` \| `[string]` | **_Default_ `false`**.<br/>If `true`, the network files will not be cached. If specified list of URLs provided, than that URLs will not be cached. |
+        | `no_network_cache` | `boolean`\|`[string]` | **_Default_ `false`**.<br/>If `true`, the network files will not be cached. If specified list of URLs provided, than that URLs will not be cached. |
         | `no_stream_cache` | `[string]` | **_Default_ `null`**.<br/>If file name is not valid for stream perspective, then that specific stream will not be cached. `[]` or `null` means all streams will be discarded after reading metadata. |
 
 -   ### Add/Edit Metadata
@@ -303,7 +306,7 @@ async function config() {
         | --- | --- | --- |
         | `name` | `string` | The name of the metadata tag. If it's a custom tag, make sure to initialize the [`Metadata.configurator()`](#import--configure) |
         | `value` | `any` or `null` | The value of the metadata tag. If the tag has no value then it will be removed from the file. |
-        | `custom` | `string` | **[Advanced]**<br/>Custom Exiftool writing command can be directly passed to `custom`.<br/>Read more about exiftool commands at:<br/>https://exiftool.org/exiftool_pod.html#WRITING-EXAMPLES |
+        | `custom` | `string` | **[Advanced]**<br/>Custom Exiftool writing command can be directly passed to `custom`.<br/>Read more about [ExifTool commands](https://exiftool.org/exiftool_pod.html#WRITING-EXAMPLES). |
         | `empty_tag` | `boolean` | **[DEPRECATED]**<br/>Delete the current tag's value without deleting the whole tag from the file. |
 
 -   ### Copy Metadata
@@ -504,7 +507,7 @@ Explicitly set 'no_cache' to false to enable caching for stream.
             path: exifToolPath
         });
     ```
-    More examples: [/test/raw.js]
+    More examples: [test/raw.js]
 
     - #### Options
 
@@ -512,17 +515,16 @@ Explicitly set 'no_cache' to false to enable caching for stream.
     |------|------|-------------|
     | `path` | `string` | **[Required]**</br>The path to the ExifTool binary.</br>**NOTE:** `path` is optional, if ExifTool is callable from the CLI as `perl exiftool`. |
     | `config` | `string` | The configuration file path. |
-    | `raw` | `boolean` | **[Advanced]**</br>[Default: `false`]. If `true`, the child process will be returned. |
-    | `streams` | `boolean` | **[Advanced]**</br>[Default: `false`]. If `true`, raw streams will be returned. |
-    | `queue` | `boolean` |  **[Advanced]**</br>[Default: `false`]. If `true`, the stream observer will serve streams in queued order and will remove the callback from the stream observer once the command is fulfilled successfully or not. |
+    | `raw` | `boolean` | **[Advanced]**</br>**_Default_ `false`**</br>If `true`, the child process will be returned. |
+    | `streams` | `boolean` | **[Advanced]**</br>**_Default_ `false`**</br>If `true`, raw streams will be returned. |
+    | `queue` | `boolean` |  **[Advanced]**</br>**_Default_ `false`**</br>If `true`, the stream observer will serve streams in queued order and will remove the callback from the stream observer once the command is fulfilled successfully or not. |
 
 -   ### _Experimental Features_
     Experimental features can be unstable or maybe subject to change, using them in a **production** environment is **not recommended**. 
         
     | Name | Type | Description |
     | -------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------- | 
-    | `fast` | `boolean` | **[Advanced]**</br>[Default: `false`]. If `true`, a dedicated process will be started for the binaries. This can significantly increase performance. | 
-    | `auto` | `boolean` | **[Not Recommended]**[Default: `false`]. If `true`, the custom metadata tags will be automatically added to the configuration file.</br>**NOTE**: This option can cause performance issues. |
+    | `fast` | `boolean` | **[Advanced]**</br>**_Default_ `false`**</br>If `true`, a dedicated process will be started for the binaries. This can significantly increase performance. |
 
 ## Sponsor
 
@@ -534,13 +536,16 @@ Support this project.<br/> <a href="https://www.buymeacoffee.com/anasshakil" tar
 -   Future version might break backward compatibility.
 -   Check release notes for breaking changes.
 
+## Future
+- This library is currently rewritten in TypeScript.
+- `fast` mode will be enabled by default.
+
 ## Test
 
 sample implementation can be found inside [test directory].
 
-### Jest
-
--   ##### Future milestone
+- ### Jest
+    - **Future milestone**
 
 ## Tools
 
@@ -556,4 +561,4 @@ sample implementation can be found inside [test directory].
 
 [test directory]: https://github.com/anasshakil/metadata/tree/main/test
 [MIT]: https://github.com/anasshakil/metadata/blob/main/LICENSE
-[/test/raw.js]: https://github.com/anasshakil/metadata/blob/main/test/raw.js
+[test/raw.js]: https://github.com/anasshakil/metadata/blob/main/test/raw.js
