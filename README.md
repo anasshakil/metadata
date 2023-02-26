@@ -305,7 +305,7 @@ async function config() {
         | Name | Type | Description |
         | --- | --- | --- |
         | `name` | `string` | The name of the metadata tag. If it's a custom tag, make sure to initialize the [`Metadata.configurator()`](#import--configure) |
-        | `value` | `any` or `null` | The value of the metadata tag. If the tag has no value then it will be removed from the file. |
+        | `value` | `any`\|`null` | The value of the metadata tag. If the tag has no value then it will be removed from the file. |
         | `custom` | `string` | **[Advanced]**<br/>Custom Exiftool writing command can be directly passed to `custom`.<br/>Read more about [ExifTool commands](https://exiftool.org/exiftool_pod.html#WRITING-EXAMPLES). |
         | `empty_tag` | `boolean` | **[DEPRECATED]**<br/>Delete the current tag's value without deleting the whole tag from the file. |
 
