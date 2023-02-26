@@ -1,7 +1,5 @@
 # Node-Metadata
-
-### Pre-Release Version
-
+<!-- ### Pre-Release Version -->
 An advanced Node.js interface to the exiftool. 🚀
 
 > “An amazing level of senseless perfectionism, which is simply impossible not to respect.”
@@ -39,6 +37,7 @@ npm install --save @enviro/metadata@1.3.2
 
 -   Exiftool need perl to be installed on your system, download perl from https://www.perl.org/get.html
 -   Node.js version >= 16.x
+-   ExifTool is no longer included with this package. [Download ExifTool](https://sourceforge.net/projects/exiftool/).</br>Read more about seamless ExifTool integration using `path` option in [documentation](#ExifMetadataReadWriteOptions).
 
 ## Import & Configure
 
@@ -548,8 +547,7 @@ sample implementation can be found inside [test directory].
 -   ##### Comming Soon
 
 ## Known Issues
-
--   `fast` mode can break metadata output when reading very large number of files. </br>**STATUS:** Resolved in v1.3.2
+**_If you discover any bugs, create an issue._**
 
 ## License
 [MIT]
