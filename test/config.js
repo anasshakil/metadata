@@ -7,38 +7,38 @@ async function config1() {
                 name: "Sig",
                 type: "string",
                 exifPropGroup: "Exif",
-                exifPropSubGroup: "Main"
+                exifPropSubGroup: "Main",
             },
             {
                 name: "Key1",
                 type: "string",
                 exifPropGroup: "Exif",
-                exifPropSubGroup: "Main"
+                exifPropSubGroup: "Main",
             },
             {
                 name: "Key2",
                 type: "string",
                 exifPropGroup: "Exif",
-                exifPropSubGroup: "Main"
+                exifPropSubGroup: "Main",
             },
             {
                 name: "Sig",
                 type: "string",
                 exifPropGroup: "PDF",
-                exifPropSubGroup: "Info"
+                exifPropSubGroup: "Info",
             },
             {
                 name: "KeyPDF1",
                 type: "string",
                 exifPropGroup: "PDF",
-                exifPropSubGroup: "Info"
+                exifPropSubGroup: "Info",
             },
             {
                 name: "KeyPDF2",
                 type: "string",
                 exifPropGroup: "DOCX",
-                exifPropSubGroup: "Microsoft"
-            }
+                exifPropSubGroup: "Microsoft",
+            },
         ],
         // keyCodeEvaluator: 60248
     });
@@ -52,41 +52,41 @@ async function config2() {
                 name: "Sig",
                 type: "string",
                 exifPropGroup: "Exif",
-                exifPropSubGroup: "Main"
+                exifPropSubGroup: "Main",
             },
             {
                 name: "Key1",
                 type: "string",
                 exifPropGroup: "Exif",
-                exifPropSubGroup: "Main"
+                exifPropSubGroup: "Main",
             },
             {
                 name: "Key2",
                 type: "string",
                 exifPropGroup: "Exif",
-                exifPropSubGroup: "Main"
+                exifPropSubGroup: "Main",
             },
             {
                 name: "Sig",
                 type: "string",
                 exifPropGroup: "PDF",
-                exifPropSubGroup: "Info"
+                exifPropSubGroup: "Info",
             },
             {
                 name: "KeyPDF1",
                 type: "string",
                 exifPropGroup: "PDF",
-                exifPropSubGroup: "Info"
+                exifPropSubGroup: "Info",
             },
             {
                 name: "KeyPDF2",
                 type: "string",
                 exifPropGroup: "DOCX",
-                exifPropSubGroup: "Microsoft"
-            }
+                exifPropSubGroup: "Microsoft",
+            },
         ],
-    })
+    });
 }
 
 // config1();
-// config2();
+config2();
