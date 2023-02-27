@@ -30,7 +30,7 @@ An advanced Node.js interface to the exiftool. 🚀
 ## Install
 
 ```bash
-npm install --save @enviro/metadata@1.3.2
+npm install --save @enviro/metadata
 ```
 
 ## Requirements
