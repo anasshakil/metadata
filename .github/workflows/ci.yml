@@ -12,6 +12,9 @@ jobs:
       with:
         node-version: 19
         cache: 'npm'
+    - run: |
+        chmod +x "${GITHUB_WORKSPACE}/.github/script.sh"
+        "${GITHUB_WORKSPACE}/.github/exiftool.sh"
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
