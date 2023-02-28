@@ -24,8 +24,10 @@ async function readMultipleFromNet() {
 
 async function readMultipleFromStream() {
     try {
-        const s1 = createReadStream(path.join(__dir__(), "test/sample.pdf"));
-        const s2 = createReadStream(path.join(__dir__(), "test/s3.jpg"));
+        const s1 = createReadStream(
+            path.join(__dir__(), "examples/sample.pdf")
+        );
+        const s2 = createReadStream(path.join(__dir__(), "examples/s3.jpg"));
         const metadata = await Metadata.get([s2, s1]);
         console.log(metadata);
     } catch (e) {
@@ -38,8 +40,8 @@ async function readMultipleFromDisk() {
         //BUG Spawn close
         const metadata = await Metadata.get(
             [
-                // path.join(__dir__(), "test/samples/404.pdf"),
-                path.join(__dir__(), "test/samples/s3.jpg"),
+                // path.join(__dir__(), "examples/samples/404.pdf"),
+                path.join(__dir__(), "examples/samples/s3.jpg"),
             ],
             {
                 // path: path.join(__dir__(), ".exiftool/exiftool"),
@@ -68,11 +70,11 @@ async function readMultipleFromDirectory() {
 
 async function readAllFromMixed() {
     try {
-        const s2 = createReadStream(path.join(__dir__(), "test/s3.jpg"));
+        const s2 = createReadStream(path.join(__dir__(), "examples/s3.jpg"));
         const metadata = await Metadata.get(
             [
                 "https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_10mb.mp4",
-                path.join(__dir__(), "test/sample.pdf"),
+                path.join(__dir__(), "examples/sample.pdf"),
                 s2,
             ],
             {

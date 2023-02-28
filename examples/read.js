@@ -5,7 +5,7 @@ import Metadata from "../lib/index.js";
 
 async function read() {
     try {
-        const _file = path.join(__dir__(), "test/samples/s1.pdf");
+        const _file = path.join(__dir__(), "examples/samples/s1.pdf");
         const metadata = await Metadata.get(_file, {
             path: path.join(__dir__(), ".exiftool/exiftool"),
             tags: [{ name: "Author" }],
@@ -20,7 +20,9 @@ async function read() {
 
 async function streamFile() {
     try {
-        const rs = createReadStream(path.join(__dir__(), "test/sample.pdf"));
+        const rs = createReadStream(
+            path.join(__dir__(), "examples/sample.pdf")
+        );
         const metadata = await Metadata.get(rs, {
             tags: [
                 {

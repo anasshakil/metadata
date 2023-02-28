@@ -3,14 +3,13 @@ import path from "node:path";
 import { __dir__ } from "../__dir.js";
 import { createReadStream } from "node:fs";
 
-async function write(auto = false) {
+async function write() {
     try {
-        const _file = path.join(__dir__(), "test/samples/test.pdf");
+        const _file = path.join(__dir__(), "examples/samples/test.pdf");
         const metadata = await Metadata.set(_file, {
             path: path.join(__dir__(), ".exiftool/exiftool"),
             metadata: true,
             new: true,
-            auto: true,
             tags: [
                 {
                     name: "Hello",
@@ -30,7 +29,9 @@ async function write(auto = false) {
 
 async function streamFile() {
     try {
-        const rs = createReadStream(path.join(__dir__(), "test/sample.pdf"));
+        const rs = createReadStream(
+            path.join(__dir__(), "examples/sample.pdf")
+        );
         const metadata = await Metadata.set(rs, {
             tags: [
                 {
