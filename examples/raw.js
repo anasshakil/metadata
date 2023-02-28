@@ -2,7 +2,7 @@ import Metadata from "../lib/index.js";
 import { __dir__ } from "../__dir.js";
 import path from "node:path";
 
-const demo = path.join(__dir__(), "test/samples/s1.pdf");
+const demo = path.join(__dir__(), "examples/samples/s1.pdf");
 const exifToolPath = path.join(__dir__(), ".exiftool/exiftool");
 
 const sub1 = Metadata.CLI.run(
@@ -30,7 +30,7 @@ const sub2 = Metadata.CLI.run(
 (() => {
     setTimeout(function () {
         const sub3 = Metadata.CLI.run(
-            `-j -q -author ${path.join(__dir__(), "test/samples")}`,
+            `-j -q -author ${path.join(__dir__(), "examples/samples")}`,
             function (e, d) {
                 Metadata.CLI.stop(sub3);
                 console.log(e || d);
@@ -41,3 +41,5 @@ const sub2 = Metadata.CLI.run(
         );
     }, 3000);
 })();
+
+// setTimeout(Metadata.CLI.kill, 5000);
